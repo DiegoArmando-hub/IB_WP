@@ -7,19 +7,9 @@
 <footer id="main-footer" role="contentinfo">
     <div class="footer-top">
         <div class="container">
-            <!-- Redes Sociales -->
-            <div class="footer-social-icons">
-                <?php
-                $social_keys = ['Facebook', 'Twitter', 'Google', 'Pinterest', 'LinkedIn'];
-                foreach ($social_keys as $key) {
-                    if (!empty($company_info[$key])) {
-                        echo '<a href="' . esc_url($company_info[$key]) . '" target="_blank" aria-label="' . esc_attr($key) . '">
-                                <i class="fab fa-' . strtolower($key) . '"></i>
-                              </a>';
-                    }
-                }
-                ?>
-            </div>
+            
+
+
 
             <!-- Información de Contacto -->
             <div class="footer-contact-info">
