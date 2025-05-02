@@ -29,6 +29,20 @@ for i in {1..10}; do
   fi
 done
 
+# Descargar WordPress si no está presente
+if [ ! -f /var/www/html/wp-settings.php ]; then
+  echo ">>> Descargando WordPress..."
+  wp core download --locale=es_ES --allow-root --force
+fi
+
+# Copiar tema Divi al directorio de temas
+if [ -d /var/www/html/wp-content/themes/divi ]; then
+  echo ">>> Tema Divi ya está presente."
+else
+  echo ">>> Copiando tema Divi..."
+  cp -R /var/www/html/wp-content/themes_custom/divi /var/www/html/wp-content/themes/divi
+fi
+
 # Configuración básica de WordPress
 if [ ! -f /var/www/html/wp-config.php ]; then
   echo ">>> Creando wp-config.php..."
