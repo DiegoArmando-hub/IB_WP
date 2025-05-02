@@ -7,6 +7,7 @@ required_vars=(
   "WORDPRESS_DB_USER"
   "WORDPRESS_DB_PASSWORD"
   "WORDPRESS_URL"
+  "ACTIVATE_PLUGINS"
 )
 
 for var in "${required_vars[@]}"; do
@@ -61,6 +62,60 @@ if ! wp core is-installed --allow-root; then
     --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
     --skip-email \
     --allow-root
+fi
+
+# Instalar plugins indicados en ACTIVATE_PLUGINS
+echo ">>> Instalando plugins..."
+for plugin in ${ACTIVATE_PLUGINS//,/ }; do
+  if ! wp plugin install $plugin --allow-root --force 2>/dev/null; then
+    echo "?? Plugin no instalado: $plugin (?nombre correcto?)"
+  fi
+done
+
+# Copiar plugins y temas personalizados
+echo ">>> Copiando assets personalizados..."
+cp -a /var/www/html/wp-content/plugins_custom/. /var/www/html/wp-content/plugins/
+
+# Copiar temas Divi y Divi-Child solo si no existen
+echo ">>> Copiando temas Divi y Divi-Child..."
+if [ ! -d "/var/www/html/wp-content/themes/divi" ]; then
+  cp -a /var/www/html/wp-content/themes_custom/divi /var/www/html/wp-content/themes/
+fi
+
+if [ ! -d "/var/www/html/wp-content/themes/divi-child" ]; then
+  cp -a /var/www/html/wp-content/themes_custom/divi-child /var/www/html/wp-content/themes/
+fi
+
+# Eliminar tema custom si existe
+echo ">>> Eliminando tema custom si existe..."
+wp theme delete custom --allow-root 2>/dev/null || true
+
+# Crear y dar permisos a upgrade y languages
+echo ">>> Corrigiendo permisos de wp-content/upgrade y wp-content/languages..."
+mkdir -p /var/www/html/wp-content/upgrade /var/www/html/wp-content/languages
+chown -R www-data:www-data /var/www/html/wp-content/upgrade /var/www/html/wp-content/languages
+chmod 775 /var/www/html/wp-content/upgrade /var/www/html/wp-content/languages
+
+# Activar el tema hijo o Divi
+echo ">>> Activando tema hijo divi-child (o Divi si falla)..."
+if wp theme is-installed divi-child --allow-root && wp theme is-installed divi --allow-root; then
+  wp theme activate divi-child --allow-root || wp theme activate divi --allow-root
+elif wp theme is-installed divi --allow-root; then
+  wp theme activate divi --allow-root
+fi
+
+# Eliminar todos los temas excepto los necesarios
+echo ">>> Eliminando temas predeterminados innecesarios..."
+for theme in $(wp theme list --field=name --allow-root); do
+  if [[ "$theme" != "divi" && "$theme" != "divi-child" ]]; then
+    wp theme delete $theme --allow-root || true
+  fi
+done
+
+# Seguridad: deshabilitar XML-RPC si está configurado
+if [ "${DISABLE_XMLRPC}" = "true" ]; then
+  echo ">>> Deshabilitando XML-RPC..."
+  echo "<?php die('Acceso denegado'); ?>" > "/var/www/html/xmlrpc.php"
 fi
 
 echo "✅ Instalación completada en ${WORDPRESS_URL}"
