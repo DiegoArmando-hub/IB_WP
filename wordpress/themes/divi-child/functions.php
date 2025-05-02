@@ -13,7 +13,7 @@ defined('ABSPATH') || exit;
 // ==============================================
 function divi_child_setup()
 {
-    // Cargar traducciones nuevas
+    // Cargar traducciones
     load_child_theme_textdomain('divi-child', get_stylesheet_directory() . '/languages');
 
     // Registrar menús
@@ -117,13 +117,3 @@ function divi_child_default_custom_logo($html)
     return $html;
 }
 add_filter('get_custom_logo', 'divi_child_default_custom_logo');
-
-// ==============================================
-// 6. SOPORTE DE ICONOS FONT AWESOME
-// ==============================================
-// Ya incluido en la sección de carga de estilos (punto 2)
-
-// ==============================================
-// 7. PERSONALIZACIONES ADICIONALES
-// ==============================================
-// Agrega aquí cualquier otra funcionalidad personalizada que necesites

@@ -37,9 +37,8 @@
             <div class="logo-container">
                 <?php
                 if (has_custom_logo()) {
-                    the_custom_logo(); // Mostrar logo personalizado
+                    the_custom_logo();
                 } else {
-                    // Mostrar logo predeterminado
                     echo '<a href="' . esc_url(home_url('/')) . '">';
                     echo '<img src="' . get_stylesheet_directory_uri() . '/img/logo.png" alt="' . get_bloginfo('name') . '">';
                     echo '</a>';
@@ -63,3 +62,7 @@
             </div>
         </div>
     </header>
+    <?php wp_footer(); ?>
+</body>
+
+</html>
