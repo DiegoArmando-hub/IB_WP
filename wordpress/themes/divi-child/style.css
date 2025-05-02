@@ -6,7 +6,7 @@ Description: Tema hijo personalizado para Divi
 Author: Tu Nombre
 */
 
-/* Estilos generales */
+/* Estilos generales cambios 1.1*/
 body {
     font-family: 'Open Sans', sans-serif;
     color: #333;
@@ -26,6 +26,11 @@ body {
     max-height: 80px;
     width: auto;
     transition: all 0.3s ease;
+}
+
+/* Agregar logo personalizado */
+#main-header .logo-container img {
+    content: url('img/logo.png'); /* Ruta relativa al logo */
 }
 
 /* Menú principal */

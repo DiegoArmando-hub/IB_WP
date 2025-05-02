@@ -49,6 +49,13 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     --dbhost="${WORDPRESS_DB_HOST}" \
     --allow-root \
     --force
+
+  # Configuración adicional para wp-config.php
+  echo ">>> Configurando wp-config.php..."
+  {
+    echo "define('FS_METHOD', 'direct');"
+    echo "define('WP_DEBUG', ${WP_DEBUG});"
+  } >> /var/www/html/wp-config.php
 fi
 
 # Instalar WordPress si aún no está instalado
@@ -63,6 +70,12 @@ if ! wp core is-installed --allow-root; then
     --skip-email \
     --allow-root
 fi
+
+# Configurar permisos de archivos
+echo ">>> Configurando permisos de archivos..."
+chown -R www-data:www-data /var/www/html
+find /var/www/html -type d -exec chmod 755 {} \;
+find /var/www/html -type f -exec chmod 644 {} \;
 
 # Instalar plugins indicados en ACTIVATE_PLUGINS
 echo ">>> Instalando plugins..."
