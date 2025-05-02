@@ -1,0 +1,58 @@
+{
+  "layout": {
+    "type": "section",
+    "settings": {
+      "background_color": "#ffffff",
+      "sticky": true,
+      "padding": {
+        "top": "15px",
+        "bottom": "15px"
+      },
+      "box_shadow": "0 2px 10px rgba(0,0,0,0.1)"
+    },
+    "content": [
+      {
+        "type": "row",
+        "settings": {
+          "width": "90%",
+          "max_width": "1200px",
+          "margin": "0 auto"
+        },
+        "content": [
+          {
+            "type": "column",
+            "width": "25%",
+            "content": [
+              {
+                "type": "custom_logo",
+                "settings": {
+                  "width": "180px",
+                  "max_height": "80px",
+                  "alignment": "left"
+                }
+              }
+            ]
+          },
+          {
+            "type": "column",
+            "width": "75%",
+            "content": [
+              {
+                "type": "menu",
+                "settings": {
+                  "menu_id": "primary-menu",
+                  "alignment": "right",
+                  "font_size": "16px",
+                  "text_color": "#333333",
+                  "hover_color": "#3a86ff",
+                  "dropdown_animation": "fade",
+                  "mobile_breakpoint": "980px"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

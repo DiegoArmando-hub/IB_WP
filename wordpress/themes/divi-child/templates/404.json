@@ -1,0 +1,36 @@
+{
+  "layout": {
+    "type": "section",
+    "settings": {
+      "background_color": "#ffffff"
+    },
+    "content": [
+      {
+        "type": "heading",
+        "settings": {
+          "title": "404 - Página No Encontrada",
+          "font_size": "48px",
+          "text_color": "#e74c3c",
+          "alignment": "center"
+        }
+      },
+      {
+        "type": "text",
+        "settings": {
+          "content": "Lo sentimos, la página que buscas no existe. Puedes volver al inicio o explorar nuestros servicios.",
+          "alignment": "center",
+          "font_size": "18px"
+        }
+      },
+      {
+        "type": "button",
+        "settings": {
+          "button_text": "Volver al Inicio",
+          "button_url": "/",
+          "alignment": "center",
+          "background_color": "#3498db"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "layout": {
+    "type": "section",
+    "settings": {
+      "background_color": "#2c3e50",
+      "padding": {
+        "top": "50px",
+        "bottom": "30px"
+      }
+    },
+    "content": [
+      {
+        "type": "row",
+        "settings": {
+          "width": "90%",
+          "max_width": "1200px",
+          "margin": "0 auto",
+          "column_spacing": "30px"
+        },
+        "content": [
+          {
+            "type": "column",
+            "width": "40%",
+            "content": [
+              {
+                "type": "heading",
+                "settings": {
+                  "title": "[site_title]",
+                  "level": "h3",
+                  "text_color": "#ffffff",
+                  "margin_bottom": "20px"
+                }
+              },
+              {
+                "type": "text",
+                "settings": {
+                  "content": "Email: [admin_email]",
+                  "text_color": "#ecf0f1",
+                  "margin_bottom": "10px"
+                }
+              },
+              {
+                "type": "text",
+                "settings": {
+                  "content": "Sitio seguro administrado por Diego Urgilés",
+                  "text_color": "#bdc3c7",
+                  "font_size": "14px"
+                }
+              }
+            ]
+          },
+          {
+            "type": "column",
+            "width": "30%",
+            "content": [
+              {
+                "type": "heading",
+                "settings": {
+                  "title": "Enlaces rápidos",
+                  "level": "h4",
+                  "text_color": "#ffffff",
+                  "margin_bottom": "20px"
+                }
+              },
+              {
+                "type": "menu",
+                "settings": {
+                  "menu_id": "footer-menu",
+                  "text_color": "#bdc3c7",
+                  "hover_color": "#3a86ff"
+                }
+              }
+            ]
+          },
+          {
+            "type": "column",
+            "width": "30%",
+            "content": [
+              {
+                "type": "heading",
+                "settings": {
+                  "title": "Seguridad",
+                  "level": "h4",
+                  "text_color": "#ffffff",
+                  "margin_bottom": "20px"
+                }
+              },
+              {
+                "type": "image",
+                "settings": {
+                  "image_url": "/wp-content/themes/divi-child/img/security-badge.png",
+                  "width": "150px",
+                  "alignment": "left"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "divider",
+        "settings": {
+          "color": "#34495e",
+          "margin": "30px auto",
+          "width": "90%"
+        }
+      },
+      {
+        "type": "row",
+        "settings": {
+          "width": "90%",
+          "max_width": "1200px",
+          "margin": "0 auto"
+        },
+        "content": [
+          {
+            "type": "column",
+            "width": "100%",
+            "content": [
+              {
+                "type": "text",
+                "settings": {
+                  "content": "© [current_year] [site_title]. Todos los derechos reservados.",
+                  "alignment": "center",
+                  "text_color": "#bdc3c7",
+                  "font_size": "14px"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
