@@ -16,12 +16,10 @@ for var in "${required_vars[@]}"; do
   fi
 done
 
-# Establecer valor predeterminado para WP_DEBUG si no está definido
-if [ -z "${WP_DEBUG:-}" ]; then
-  WP_DEBUG=false
-fi
+# Configurar WP_DEBUG por defecto si no está definido
+WP_DEBUG="${WP_DEBUG:-false}"
 
-# Esperar a MySQL
+# Esperar a que MySQL esté listo
 echo "🕒 Esperando MySQL..."
 for i in {1..10}; do
   if mysqladmin ping -h"${WORDPRESS_DB_HOST%:*}" -u"${WORDPRESS_DB_USER}" -p"${WORDPRESS_DB_PASSWORD}" --silent; then
@@ -29,7 +27,7 @@ for i in {1..10}; do
     break
   else
     echo "🔄 Intento $i/10 fallido"
-    [ $i -eq 10 ] && { echo "❌ No se pudo conectar a MySQL"; exit 1; }
+    [ $i -eq 10 ] && { echo "❌ No se pudo conectar a MySQL después de 10 intentos"; exit 1; }
     sleep $((i * 2))
   fi
 done
@@ -40,7 +38,7 @@ if [ ! -f /var/www/html/wp-settings.php ]; then
   wp core download --locale=es_ES --allow-root --force
 fi
 
-# Configurar WordPress
+# Crear wp-config.php si no existe
 if [ ! -f /var/www/html/wp-config.php ]; then
   echo ">>> Creando wp-config.php..."
   wp config create \
@@ -52,7 +50,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     --force
 fi
 
-# Instalar WordPress
+# Instalar WordPress si aún no está instalado
 if ! wp core is-installed --allow-root; then
   echo ">>> Instalando WordPress..."
   wp core install \

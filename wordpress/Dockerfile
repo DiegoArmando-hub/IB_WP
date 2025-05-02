@@ -36,6 +36,5 @@ RUN dos2unix /usr/local/bin/install.sh \
     && find /var/www/html -type f -exec chmod 644 {} \; \
     && echo "www-data ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-# Definir entrada del contenedor y comando por defecto
-ENTRYPOINT ["/usr/local/bin/install.sh"]
-CMD ["php-fpm", "-F"]
+# Ejecutar install.sh y luego iniciar php-fpm
+ENTRYPOINT ["/bin/bash", "-c", "/usr/local/bin/install.sh && php-fpm -F"]

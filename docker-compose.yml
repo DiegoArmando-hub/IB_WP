@@ -46,7 +46,7 @@ services:
     networks:
       - wp_network
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost/wp-admin/install.php || exit 1"]
+      test: ["CMD-SHELL", "curl -f ${WORDPRESS_URL}/wp-admin/install.php || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10
