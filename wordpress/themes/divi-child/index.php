@@ -16,7 +16,8 @@ get_header();
     if (have_posts()) {
         while (have_posts()) {
             the_post();
-            get_template_part('template-parts/content', get_post_format());
+            // Aquí puedes incluir la plantilla modular de Divi
+            echo do_shortcode('[et_pb_section][et_pb_row][et_pb_text]¡Contenido dinámico de Divi aquí![/et_pb_text][/et_pb_row][/et_pb_section]');
         }
     } else {
         get_template_part('template-parts/content', 'none');
