@@ -1,5 +1,5 @@
 # Ignora todo el entorno
-.env
+#.env
 *.log
 *.tar
 *.sql
