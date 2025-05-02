@@ -14,7 +14,7 @@ services:
       wp_network:
         ipv4_address: 172.28.0.2
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
       interval: 5s
       timeout: 5s
       retries: 10

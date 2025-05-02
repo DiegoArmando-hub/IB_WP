@@ -38,4 +38,4 @@ RUN dos2unix /usr/local/bin/install.sh \
 
 # Definir entrada del contenedor y comando por defecto
 ENTRYPOINT ["/usr/local/bin/install.sh"]
-CMD ["php-fpm"]
+CMD ["php-fpm", "-F"]

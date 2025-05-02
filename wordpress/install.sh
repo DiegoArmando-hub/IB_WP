@@ -16,10 +16,15 @@ for var in "${required_vars[@]}"; do
   fi
 done
 
+# Establecer valor predeterminado para WP_DEBUG si no está definido
+if [ -z "${WP_DEBUG:-}" ]; then
+  WP_DEBUG=false
+fi
+
 # Esperar a MySQL
 echo "🕒 Esperando MySQL..."
 for i in {1..10}; do
-  if mysqladmin ping -h172.28.0.2 -u"${WORDPRESS_DB_USER}" -p"${WORDPRESS_DB_PASSWORD}" --ssl=0 --silent; then
+  if mysqladmin ping -h"${WORDPRESS_DB_HOST%:*}" -u"${WORDPRESS_DB_USER}" -p"${WORDPRESS_DB_PASSWORD}" --silent; then
     echo "✅ MySQL listo"
     break
   else
@@ -35,84 +40,29 @@ if [ ! -f /var/www/html/wp-settings.php ]; then
   wp core download --locale=es_ES --allow-root --force
 fi
 
-# Copiar tema Divi al directorio de temas
-if [ -d /var/www/html/wp-content/themes/divi ]; then
-  echo ">>> Tema Divi ya está presente."
-else
-  echo ">>> Copiando tema Divi..."
-  cp -R /var/www/html/wp-content/themes_custom/divi /var/www/html/wp-content/themes/divi
-fi
-
-# Configuración básica de WordPress
+# Configurar WordPress
 if [ ! -f /var/www/html/wp-config.php ]; then
   echo ">>> Creando wp-config.php..."
   wp config create \
     --dbname="${WORDPRESS_DB_NAME}" \
     --dbuser="${WORDPRESS_DB_USER}" \
     --dbpass="${WORDPRESS_DB_PASSWORD}" \
-    --dbhost="172.28.0.2" \
+    --dbhost="${WORDPRESS_DB_HOST}" \
     --allow-root \
     --force
-
-  # Configuraciones adicionales seguras
-  {
-    echo "define('WP_SITEURL', '${WORDPRESS_URL}');"
-    echo "define('WP_HOME', '${WORDPRESS_URL}');"
-    echo "define('FS_METHOD', 'direct');"
-    echo "define('DISALLOW_FILE_EDIT', true);"
-    [ -n "${WP_DEBUG}" ] && echo "define('WP_DEBUG', ${WP_DEBUG});"
-  } >> /var/www/html/wp-config.php
 fi
 
-# Instalar WordPress si no está instalado
+# Instalar WordPress
 if ! wp core is-installed --allow-root; then
   echo ">>> Instalando WordPress..."
   wp core install \
     --url="${WORDPRESS_URL}" \
-    --title="${WORDPRESS_TITLE:-Mi Sitio WordPress}" \
-    --admin_user="${WORDPRESS_ADMIN_USER:-admin}" \
-    --admin_password="${WORDPRESS_ADMIN_PASSWORD:-password}" \
-    --admin_email="${WORDPRESS_ADMIN_EMAIL:-admin@example.com}" \
+    --title="${WORDPRESS_TITLE}" \
+    --admin_user="${WORDPRESS_ADMIN_USER}" \
+    --admin_password="${WORDPRESS_ADMIN_PASSWORD}" \
+    --admin_email="${WORDPRESS_ADMIN_EMAIL}" \
     --skip-email \
     --allow-root
-fi
-
-# Configurar logo y título del sitio
-echo ">>> Configurando logo y título..."
-wp option update site_icon $(wp media import /var/www/html/wp-content/themes/divi-child/img/logo.png --porcelain --allow-root) --allow-root
-wp option update blogname "${WORDPRESS_TITLE:-Mi Sitio WordPress}" --allow-root
-
-# Activar tema Divi Child
-echo ">>> Activando tema Divi Child..."
-wp theme activate divi-child --allow-root || {
-  echo "⚠️ No se pudo activar el tema hijo, activando Divi..."
-  wp theme activate divi --allow-root
-}
-
-# Limpiar temas innecesarios
-echo ">>> Limpiando temas innecesarios..."
-wp theme list --allow-root --field=name | grep -v -E "divi|divi-child" | xargs -r wp theme delete --allow-root
-
-# Instalar plugins requeridos
-if [ -n "${ACTIVATE_PLUGINS}" ]; then
-  echo ">>> Instalando plugins: ${ACTIVATE_PLUGINS}..."
-  IFS=',' read -ra plugins <<< "${ACTIVATE_PLUGINS}"
-  for plugin in "${plugins[@]}"; do
-    plugin=$(echo "$plugin" | xargs)
-    if [ -n "$plugin" ]; then
-      if ! wp plugin is-installed "$plugin" --allow-root; then
-        wp plugin install "$plugin" --allow-root
-      fi
-      wp plugin activate "$plugin" --allow-root
-    fi
-  done
-fi
-
-# Configuración de seguridad XML-RPC
-if [ "${DISABLE_XMLRPC:-false}" = "true" ]; then
-  echo ">>> Deshabilitando XML-RPC..."
-  echo "<?php die('Acceso denegado'); ?>" > "/var/www/html/xmlrpc.php"
-  chown www-data:www-data "/var/www/html/xmlrpc.php"
 fi
 
 echo "✅ Instalación completada en ${WORDPRESS_URL}"
