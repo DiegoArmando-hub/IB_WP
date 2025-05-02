@@ -13,13 +13,13 @@ defined('ABSPATH') || exit;
 // ==============================================
 function divi_child_setup()
 {
-    // Cargar traducciones
+    // Cargar traducciones nuevas
     load_child_theme_textdomain('divi-child', get_stylesheet_directory() . '/languages');
 
     // Registrar menús
     register_nav_menus(array(
         'primary-menu' => __('Menú Principal', 'divi-child'),
-        'footer-menu' => __('Menú de Pie', 'divi-child')
+        'footer-menu' => __('Menú de Pie', 'divi-child'),
     ));
 
     // Configurar logo personalizado
@@ -51,6 +51,14 @@ function divi_child_enqueue_styles()
         get_stylesheet_uri(),
         array('divi-parent-style'),
         wp_get_theme()->get('Version')
+    );
+
+    // Cargar Font Awesome para íconos sociales y otros
+    wp_enqueue_style(
+        'font-awesome',
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
+        array(),
+        '5.15.4'
     );
 }
 add_action('wp_enqueue_scripts', 'divi_child_enqueue_styles', 20);
@@ -91,3 +99,31 @@ function divi_child_theme_support()
     ));
 }
 add_action('after_setup_theme', 'divi_child_theme_support');
+
+// ==============================================
+// 5. ESTABLECER LOGO PERSONALIZADO POR DEFECTO
+// ==============================================
+function divi_child_default_custom_logo($html)
+{
+    if (has_custom_logo()) {
+        return $html;
+    }
+
+    $logo_url = get_stylesheet_directory_uri() . '/img/logo.png'; // Ruta al logo predeterminado
+    $html = '<a href="' . esc_url(home_url('/')) . '" class="custom-logo-link" rel="home" itemprop="url">';
+    $html .= '<img src="' . esc_url($logo_url) . '" class="custom-logo" alt="' . get_bloginfo('name') . '">';
+    $html .= '</a>';
+
+    return $html;
+}
+add_filter('get_custom_logo', 'divi_child_default_custom_logo');
+
+// ==============================================
+// 6. SOPORTE DE ICONOS FONT AWESOME
+// ==============================================
+// Ya incluido en la sección de carga de estilos (punto 2)
+
+// ==============================================
+// 7. PERSONALIZACIONES ADICIONALES
+// ==============================================
+// Agrega aquí cualquier otra funcionalidad personalizada que necesites

@@ -29,6 +29,7 @@ services:
       - ./wordpress/themes:/var/www/html/wp-content/themes_custom
       - ./wordpress/uploads:/var/www/html/wp-content/uploads
       - ./wordpress/themes/divi-child:/var/www/html/wp-content/themes/divi-child # Volumen para divi-child
+      - ./wordpress/wp-config.php:/var/www/html/wp-config.php # Mapeo para wp-config.php
     environment:
       WORDPRESS_DB_HOST: 172.28.0.2
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
