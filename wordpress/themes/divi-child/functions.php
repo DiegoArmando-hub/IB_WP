@@ -117,3 +117,13 @@ function divi_child_default_custom_logo($html)
     return $html;
 }
 add_filter('get_custom_logo', 'divi_child_default_custom_logo');
+
+// ==============================================
+// 5. ESTABLECER favicon PERSONALIZADO POR DEFECTO
+// ==============================================
+
+function add_custom_favicon()
+{
+    echo '<link rel="icon" href="' . get_stylesheet_directory_uri() . '/img/favicon.ico" type="image/x-icon">';
+}
+add_action('wp_head', 'add_custom_favicon');

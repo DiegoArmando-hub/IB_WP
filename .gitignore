@@ -5,7 +5,7 @@
 *.sql
 
 # Ignora archivos de desarrollo
-wp-config.php
+#wp-config.php
 .DS_Store
 
 # Volúmenes Docker

@@ -1,4 +1,13 @@
-/* Top Bar Styles */
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Top Bar */
 .top-bar {
     background-color: #2c3e50;
     color: #fff;
@@ -10,75 +19,83 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .top-bar .social-icons a {
     color: #fff;
-    margin-right: 10px;
+    margin: 0 10px;
     text-decoration: none;
     font-size: 16px;
 }
 
-.top-bar .contact-info span {
-    margin-right: 15px;
-}
-
+.top-bar .contact-info span,
 .top-bar .contact-info a {
+    margin-right: 5px;
     color: #1abc9c;
     text-decoration: none;
 }
 
-/* Main Header Styles */
+/* Header */
 #main-header {
     background-color: #fff;
     border-bottom: 1px solid #ddd;
-    padding: 15px 0;
+    padding: 10px;
 }
 
 #main-header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 #main-header .logo-container img {
-    max-height: 50px;
+    max-height: 80px; /* Ajusta la altura del logo para evitar exceso de espacio */
+    height: auto; /* Mantén proporciones */
+    display: block;
 }
 
-#main-header .main-nav .menu {
+/* Navigation */
+.main-nav .menu {
     list-style: none;
     display: flex;
     margin: 0;
     padding: 0;
+    align-items: center;
 }
 
-#main-header .main-nav .menu li {
-    margin-right: 20px;
+.main-nav .menu li {
+    margin: 0 15px;
 }
 
-#main-header .main-nav .menu li a {
+.main-nav .menu li a {
     text-decoration: none;
     color: #2c3e50;
     font-weight: bold;
     text-transform: uppercase;
+    font-size: 14px;
+    transition: color 0.3s ease;
 }
 
-#main-header .main-nav .menu li a:hover {
+.main-nav .menu li a:hover {
     color: #1abc9c;
 }
 
-#main-header .search-container {
+/* Search */
+.search-container {
     position: relative;
+
 }
 
-#main-header .search-container input {
+.search-container input {
     border: 1px solid #ddd;
     padding: 5px 10px;
     border-radius: 3px;
     font-size: 14px;
 }
 
-#main-header .search-container button {
+.search-container button {
     background: none;
     border: none;
     position: absolute;
@@ -88,4 +105,38 @@
     color: #2c3e50;
     font-size: 16px;
     cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .top-bar .container,
+    #main-header .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-nav .menu {
+        flex-direction: column;
+        margin-top: 10px;
+        align-items: center;
+    }
+
+    .main-nav .menu li {
+        margin: 10px 0;
+    }
+
+    .search-container {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #main-header .logo-container img {
+        max-height: 60px; /* Ajusta el tamaño del logo para dispositivos pequeños */
+    }
+
+    .search-container input {
+        width: 100%;
+        padding-right: 40px;
+    }
 }
