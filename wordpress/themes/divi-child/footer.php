@@ -7,9 +7,9 @@
 <footer id="main-footer" role="contentinfo">
     <div class="footer-top">
         <div class="container">
+            <!-- Redes Sociales -->
             <div class="footer-social-icons">
                 <?php
-                // Generar dinámicamente los enlaces de redes sociales
                 $social_keys = ['Facebook', 'Twitter', 'Google', 'Pinterest', 'LinkedIn'];
                 foreach ($social_keys as $key) {
                     if (!empty($company_info[$key])) {
@@ -20,6 +20,8 @@
                 }
                 ?>
             </div>
+
+            <!-- Información de Contacto -->
             <div class="footer-contact-info">
                 <?php if (!empty($company_info['phone'])) : ?>
                     <span>
