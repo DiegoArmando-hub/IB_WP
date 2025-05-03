@@ -33,6 +33,11 @@ RUN dos2unix /usr/local/bin/install.sh \
     && find /var/www/html -type f -exec chmod 644 {} \; \
     && echo "www-data ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+# Asegurar permisos consistentes en volúmenes mapeados
+RUN mkdir -p /var/www/html/wp-content/uploads \
+    && chown -R www-data:www-data /var/www/html/wp-content/uploads \
+    && chmod -R 755 /var/www/html/wp-content/uploads
+
 CMD ["bash", "-c", \
     "echo '🕒 Esperando MySQL...' \
     && until mysqladmin ping -h172.28.0.2 -u${WORDPRESS_DB_USER} -p${WORDPRESS_DB_PASSWORD} --silent; do sleep 2; done \
