@@ -1,9 +1,10 @@
 # Ignora todo el entorno
-#.env
+.env
 *.log
 *.tar
 *.sql
 
+/wordpress/uploads
 # Ignora archivos de desarrollo
 #wp-config.php
 .DS_Store
