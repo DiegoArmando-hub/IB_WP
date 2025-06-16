@@ -15,8 +15,8 @@ set -euo pipefail
 # - Elimina plugins por defecto (Hello Dolly, Akismet)
 # - Instala y activa plugins indicados en ACTIVATE_PLUGINS
 # - Copia plugins y temas personalizados si existen
-# - Activa el tema personalizado definido en THEME_TO_ACTIVATE
-# - Elimina todos los temas por defecto excepto el activo o personalizado
+# - Detecta y activa dinámicamente el tema hijo y protege el padre
+# - Elimina todos los temas por defecto excepto el hijo y el padre detectados
 # - Deshabilita XML-RPC si está configurado para mayor seguridad
 # ============================================================
 
@@ -38,7 +38,6 @@ done
 # Variables opcionales con valores por defecto
 WP_DEBUG="${WP_DEBUG:-false}"
 DISABLE_XMLRPC="${DISABLE_XMLRPC:-false}"
-THEME_TO_ACTIVATE="${THEME_TO_ACTIVATE:-}"
 
 # --- Espera a que MySQL esté listo ---
 echo "🕒 Esperando MySQL..."
@@ -131,46 +130,36 @@ if [ -d /var/www/html/wp-content/themes_custom ]; then
   cp -a /var/www/html/wp-content/themes_custom/. /var/www/html/wp-content/themes/
 fi
 
-# --- Activación automática del tema personalizado ---
-echo ">>> Buscando y activando tema personalizado..."
-if [ -n "$THEME_TO_ACTIVATE" ]; then
-  if wp theme is-installed "$THEME_TO_ACTIVATE" --allow-root; then
-    echo ">>> Activando tema desde variable: $THEME_TO_ACTIVATE"
-    wp theme activate "$THEME_TO_ACTIVATE" --allow-root
-    THEME_TO_KEEP="$THEME_TO_ACTIVATE"
-  else
-    echo "⚠️ El tema $THEME_TO_ACTIVATE no está instalado. Buscando otro tema personalizado para activar..."
-    THEME_AUTO=$(wp theme list --field=name --status=inactive --allow-root | grep -v 'twent' | head -n 1)
-    if [ -n "$THEME_AUTO" ]; then
-      echo ">>> Activando tema encontrado: $THEME_AUTO"
-      wp theme activate "$THEME_AUTO" --allow-root
-      THEME_TO_KEEP="$THEME_AUTO"
-    else
-      echo "❌ No se encontró ningún tema personalizado para activar."
-      THEME_TO_KEEP=""
+# --- Detecta y activa dinámicamente el tema hijo y protege el padre ---
+THEMES_DIR="/var/www/html/wp-content/themes"
+CHILD_THEME=""
+PARENT_THEME=""
+
+for dir in "$THEMES_DIR"/*-child; do
+  if [ -d "$dir" ]; then
+    CHILD_THEME=$(basename "$dir")
+    # Busca el nombre del tema padre en el style.css del hijo
+    if grep -q "^Template:" "$dir/style.css"; then
+      PARENT_THEME=$(grep "^Template:" "$dir/style.css" | head -n1 | awk -F': ' '{print $2}' | tr -d '\r\n')
     fi
+    break  # Solo toma el primer hijo encontrado
   fi
+done
+
+if [ -n "$CHILD_THEME" ]; then
+  echo ">>> Activando tema hijo detectado: $CHILD_THEME"
+  wp theme activate "$CHILD_THEME" --allow-root
 else
-  THEME_AUTO=$(wp theme list --field=name --status=inactive --allow-root | grep -v 'twent' | head -n 1)
-  if [ -n "$THEME_AUTO" ]; then
-    echo ">>> Activando tema encontrado: $THEME_AUTO"
-    wp theme activate "$THEME_AUTO" --allow-root
-    THEME_TO_KEEP="$THEME_AUTO"
-  else
-    echo "❌ No se encontró ningún tema personalizado para activar."
-    THEME_TO_KEEP=""
-  fi
+  echo "❌ No se encontró ningún tema hijo (-child) en $THEMES_DIR"
 fi
 
-# --- Elimina todos los temas excepto el activo o el personalizado ---
-echo ">>> Eliminando todos los temas por defecto excepto el activo o personalizado..."
-if [ -n "$THEME_TO_KEEP" ]; then
-  for theme in $(wp theme list --field=name --allow-root); do
-    if [[ "$theme" != "$THEME_TO_KEEP" ]]; then
-      wp theme delete "$theme" --allow-root || true
-    fi
-  done
-fi
+# --- Elimina todos los temas excepto el hijo y el padre detectados ---
+echo ">>> Eliminando todos los temas excepto el hijo activo y el padre detectado..."
+for theme in $(wp theme list --field=name --allow-root); do
+  if [[ "$theme" != "$CHILD_THEME" && "$theme" != "$PARENT_THEME" ]]; then
+    wp theme delete "$theme" --allow-root || true
+  fi
+done
 
 # --- Corrige permisos en carpetas upgrade y languages ---
 echo ">>> Corrigiendo permisos de wp-content/upgrade y wp-content/languages..."
