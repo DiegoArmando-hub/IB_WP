@@ -2,7 +2,7 @@
 # Archivos de entorno y configuración sensibles
 # ===========================
 .env
-.env.*
+
 !.env.example                 # Versiona solo el ejemplo
 
 # ===========================
