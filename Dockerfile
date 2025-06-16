@@ -25,7 +25,7 @@ COPY ./config/php/conf.d/custom.ini /usr/local/etc/php/conf.d/
 # Copia los temas personalizados y plugins_custom
 COPY --chown=www-data:www-data ./wordpress/themes /var/www/html/wp-content/themes
 COPY --chown=www-data:www-data ./wordpress/plugins_custom /var/www/html/wp-content/plugins_custom
-COPY --chown=www-data:www-data ./wordpress/security /var/www/html/wp-content/security
+
 
 # Copia el script de instalación y le da permisos de ejecución
 COPY --chmod=755 install.sh /usr/local/bin/
