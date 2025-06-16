@@ -19,13 +19,17 @@ RUN apt-get update && apt-get install -y \
 RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x /usr/local/bin/wp
 
+# Elimina plugins y temas por defecto de la imagen base (refuerzo)
+RUN rm -rf /usr/src/wordpress/wp-content/plugins/akismet \
+    /usr/src/wordpress/wp-content/plugins/hello.php \
+    /usr/src/wordpress/wp-content/themes/twenty*
+
 # Añade configuración PHP personalizada
 COPY ./config/php/conf.d/custom.ini /usr/local/etc/php/conf.d/
 
 # Copia los temas personalizados y plugins_custom
 COPY --chown=www-data:www-data ./wordpress/themes /var/www/html/wp-content/themes
 COPY --chown=www-data:www-data ./wordpress/plugins_custom /var/www/html/wp-content/plugins_custom
-
 
 # Copia el script de instalación y le da permisos de ejecución
 COPY --chmod=755 install.sh /usr/local/bin/

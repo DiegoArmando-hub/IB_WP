@@ -1,7 +1,0 @@
-phone=800-2345-6789
-email=globaly@demolink.org
-Facebook=https://facebook.com/YourPage
-Twitter=https://twitter.com/YourProfile
-Google=https://google.com
-Pinterest=https://pinterest.com/YourPage
-LinkedIn=https://linkedin.com/in/YourProfile
