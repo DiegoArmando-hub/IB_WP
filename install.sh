@@ -21,19 +21,20 @@ set -euo pipefail
 # ============================================================
 
 # --- Validación de variables esenciales ---
-required_vars=(
-  "WORDPRESS_DB_NAME"
-  "WORDPRESS_DB_USER"
-  "WORDPRESS_DB_PASSWORD"
-  "WORDPRESS_URL"
-  "ACTIVATE_PLUGINS"
-)
-for var in "${required_vars[@]}"; do
+# Las variables de la base de datos y URL deben estar definidas y no vacías.
+for var in "WORDPRESS_DB_NAME" "WORDPRESS_DB_USER" "WORDPRESS_DB_PASSWORD" "WORDPRESS_URL"; do
   if [ -z "${!var:-}" ]; then
-    echo "❌ Variable crítica no definida: $var"
+    echo "❌ Variable crítica no definida o vacía: $var"
     exit 1
   fi
 done
+
+# ACTIVATE_PLUGINS debe existir, pero puede estar vacía (flujo normal si no hay plugins a activar).
+# Usamos la expansión indirecta con '+x' para comprobar si está definida, sin importar su valor.
+if [ -z "${ACTIVATE_PLUGINS+x}" ]; then
+  echo "❌ Variable crítica no definida: ACTIVATE_PLUGINS"
+  exit 1
+fi
 
 # Variables opcionales con valores por defecto
 WP_DEBUG="${WP_DEBUG:-false}"
@@ -113,6 +114,7 @@ for plugin in $(wp plugin list --field=name --allow-root); do
 done
 
 # --- Instala y activa plugins indicados en ACTIVATE_PLUGINS ---
+# Si ACTIVATE_PLUGINS está vacía, este bucle no hace nada (flujo normal).
 echo ">>> Instalando y activando plugins indicados en ACTIVATE_PLUGINS..."
 for plugin in ${ACTIVATE_PLUGINS//,/ }; do
   wp plugin install "$plugin" --allow-root --force || echo "⚠️ Plugin no instalado: $plugin"
