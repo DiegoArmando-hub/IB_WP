@@ -96,3 +96,6 @@ yarn-error.log*
 # Usa archivos .gitkeep vacíos para mantener carpetas necesarias vacías en el repo.
 # Versiona archivos de ejemplo para configuración (.env.example, custom.ini.example, etc.).
 # Mantén en el repo solo lo necesario para levantar el entorno desde cero.
+/wordpress/uploads/*
+!/wordpress/uploads/
+!/wordpress/uploads/.gitkeep
