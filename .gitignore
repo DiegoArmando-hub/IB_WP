@@ -51,24 +51,24 @@ yarn-error.log*
 # ===========================
 # WordPress: archivos y carpetas generados
 # ===========================
-/wordpress/uploads/           # Medios subidos, no versionar
-/wordpress/wp-content/cache/
-/wordpress/wp-content/backups/
-/wordpress/wp-content/upgrade/
-/wordpress/wp-content/backup-db/
-/wordpress/wp-content/ai-app/
-/wordpress/wp-content/blogs.dir/
-/wordpress/wp-content/advanced-cache.php
-/wordpress/wp-content/wp-cache-config.php
+#/wordpress/uploads/           # Medios subidos, no versionar
+/wordpress/cache/
+/wordpress/backups/
+/wordpress/upgrade/
+/wordpress/backup-db/
+/wordpress/ai-app/
+/wordpress/blogs.dir/
+/wordpress/advanced-cache.php
+/wordpress/wp-cache-config.php
 
 # ===========================
 # Plugins y temas externos
 # ===========================
-/wordpress/wp-content/plugins/*
-!/wordpress/wp-content/plugins_custom/       # Versiona solo tus plugins personalizados
+/wordpress/plugins/*
+!/wordpress/plugins_custom/       # Versiona solo tus plugins personalizados
 
-/wordpress/wp-content/themes/*
-!/wordpress/themes/divi-child         # Versiona solo tu tema hijo
+# /wordpress/wp-content/themes/*
+
 # El tema Divi NO se versiona por peso y licencia
 
 # ===========================
