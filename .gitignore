@@ -65,7 +65,7 @@ yarn-error.log*
 # Plugins y temas externos
 # ===========================
 /wordpress/wp-content/plugins/*
-!/wordpress/plugins_custom/           # Versiona solo tus plugins personalizados
+!/wordpress/wp-content/plugins_custom/       # Versiona solo tus plugins personalizados
 
 /wordpress/wp-content/themes/*
 !/wordpress/themes/divi-child         # Versiona solo tu tema hijo
