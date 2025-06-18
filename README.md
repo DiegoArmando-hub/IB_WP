@@ -1,8 +1,12 @@
-ImagenBaseWP
-Entorno de desarrollo y despliegue profesional para WordPress con Docker Compose
-🚀 Descripción
-ImagenBaseWP es una plantilla avanzada para crear, desarrollar y desplegar sitios WordPress de forma profesional usando Docker Compose.
-Incluye automatización de instalación, gestión de plugins y temas personalizados, seguridad mejorada, logs, y scripts para facilitar la vida a equipos de desarrollo.
+# ImagenBaseWP
+
+---
+
+## Entorno de desarrollo y despliegue profesional para WordPress con Docker Compose
+
+🚀 **Descripción**
+
+ImagenBaseWP es una plantilla avanzada para crear, desarrollar y desplegar sitios WordPress de forma profesional usando Docker Compose. Incluye automatización de instalación, gestión de plugins y temas personalizados, seguridad mejorada, logs, y scripts para facilitar la vida a equipos de desarrollo.
 
 ```
 .
@@ -29,88 +33,107 @@ Incluye automatización de instalación, gestión de plugins y temas personaliza
 
 ```
 
-⚙️ Requisitos previos
-Docker (recomendado Docker Desktop)
+---
 
-Docker Compose
+⚙️ **Requisitos previos**
 
-(Opcional) Git
+* **Docker** (Docker Desktop o por  WSL)
+* **Docker Compose**
+* (Opcional) **Git**
 
-🚦 Primeros pasos
-1. Clona el repositorio
-bash
-git clone https://github.com/tuusuario/ImagenBaseWP.git
-cd ImagenBaseWP
-2. Configura tus variables de entorno
-Copia el archivo de ejemplo y personaliza los valores:
+---
 
-bash
-cp .env.example .env
-nano .env  # O edítalo con tu editor favorito
-Nunca subas tu archivo .env real al repositorio.
+🚦 **Primeros pasos**
 
-3. Levanta los servicios
-bash
-docker compose up -d
-WordPress estará disponible en la URL definida en WORDPRESS_URL (por defecto, http://localhost:8000).
+1.  **Clona el repositorio**
 
-4. Accede a WordPress
-Usuario y contraseña de admin: definidos en tu .env
+    ```bash
+    git clone [https://github.com/DiegoArmando-hub/IB_WP.git](https://github.com/DiegoArmando-hub/IB_WP.git)
+    cd ImagenBaseWP
+    ```
 
-Base de datos: MySQL 5.7, credenciales en .env
+2.  **Configura tus variables de entorno**
 
-🛠️ Personalización
-Plugins personalizados:
-Coloca tus plugins en wordpress/plugins_custom/
+    Copia el archivo de ejemplo y personaliza los valores:
 
-Temas personalizados:
-Coloca tus temas en wordpress/themes/
+    ```bash
+    cp .env.example .env
+    nano .env # O edítalo con tu editor favorito
+    ```
 
-Uploads:
-Los archivos subidos por WordPress van en wordpress/uploads/ (no se versionan los archivos, solo la carpeta)
+    > **Nunca** subas tu archivo `.env` real al repositorio.
 
-Configuración PHP personalizada:
-Edita config/php/conf.d/custom.ini
+3.  **Levanta los servicios**
 
-Configuración Nginx personalizada:
-Edita config/nginx/default.conf
+    ```bash
+    docker compose up -d
+    ```
 
-🔄 Comandos útiles
-Ver logs:
+    WordPress estará disponible en la URL definida en `WORDPRESS_URL` (por defecto, `http://localhost:8000`).
 
-bash
-docker compose logs -f
-Acceder al contenedor WordPress:
+4.  **Accede a WordPress**
 
-bash
-docker compose exec wordpress bash
-Usar WP-CLI:
+    * **Usuario y contraseña de admin**: definidos en tu `.env`
+    * **Base de datos**: MySQL 5.7, credenciales en `.env`
 
-bash
-docker compose run --rm wpcli plugin list
-🧩 Scripts y automatización
-install.sh:
-Automatiza la instalación, configuración, activación de plugins y temas, y refuerza la seguridad.
+---
 
-Variables de entorno:
-Controla la instalación y configuración desde el archivo .env.
+🛠️ **Personalización**
 
-🔒 Buenas prácticas
-No subas archivos confidenciales (.env, backups, uploads, etc.).
+* **Plugins personalizados**: Coloca tus plugins en `wordpress/plugins_custom/`
+* **Temas personalizados**: Coloca tus temas en `wordpress/themes/`
+* **Uploads**: Los archivos subidos por WordPress van en `wordpress/uploads/` (no se versionan los archivos, solo la carpeta)
+* **Configuración PHP personalizada**: Edita `config/php/conf.d/custom.ini`
+* **Configuración Nginx personalizada**: Edita `config/nginx/default.conf`
 
-Versiona solo tus plugins y temas personalizados.
+---
 
-Utiliza .gitignore para mantener el repositorio limpio.
+🔄 **Comandos útiles**
 
-Haz backup regular de la base de datos y uploads en producción.
+* **Ver logs**:
 
-📝 Notas adicionales
-Puedes añadir más servicios (Redis, Mailhog, etc.) modificando el docker-compose.yml.
+    ```bash
+    docker compose logs -f
+    ```
 
-Para producción, revisa y ajusta las variables de seguridad y rendimiento.
+* **Acceder al contenedor WordPress**:
 
-Si necesitas restaurar la base de datos, monta tus backups en mysql_data.
+    ```bash
+    docker compose exec wordpress bash
+    ```
 
-🤝 Contribuciones
-¡Las contribuciones son bienvenidas!
-Abre un issue o pull request para mejoras, correcciones o nuevas funcionalidade
+* **Usar WP-CLI**:
+
+    ```bash
+    docker compose run --rm wpcli plugin list
+    ```
+
+---
+
+🧩 **Scripts y automatización**
+
+* `install.sh`: Automatiza la instalación, configuración, activación de plugins y temas, y refuerza la seguridad.
+* **Variables de entorno**: Controla la instalación y configuración desde el archivo `.env`.
+
+---
+
+🔒 **Buenas prácticas**
+
+* No subas archivos confidenciales (`.env`, backups, uploads, etc.).
+* Versiona solo tus plugins y temas personalizados.
+* Utiliza `.gitignore` para mantener el repositorio limpio.
+* Haz backup regular de la base de datos y uploads en producción.
+
+---
+
+📝 **Notas adicionales**
+
+* Puedes añadir más servicios (Redis, Mailhog, etc.) modificando el `docker-compose.yml`.
+* Para producción, revisa y ajusta las variables de seguridad y rendimiento.
+* Si necesitas restaurar la base de datos, monta tus backups en `mysql_data`.
+
+---
+
+🤝 **Contribuciones**
+
+¡Las contribuciones son bienvenidas! Abre un [issue](https://github.com/DiegoArmando-hub/IB_WP/issues) o [pull request](https://github.com/DiegoArmando-hub/ImagenBaseWP/pulls) para mejoras, correcciones o nuevas funcionalidades.
